@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<div class="item">
+				<span>姓: </span>
+				<input type="text" v-model="firstname"/>
+			</div>
+			<div class="item">
+				<span>名: </span>
+				<input type="text" v-model="lastname"/>
+			</div>
+			<div class="item">
+				<span>姓名: </span>
+				<input type="text" v-model="showUsername"/>
+			</div>
+			<!-- 
+			1. 以 "v-"开头的自定义标签属性
+			2. 双大括号表达式   可以调用该对象的一些方法：eg: msg.toUpperCase() //转化为大写
+			3. 强制数据绑定，指定变化的属性值
+				完整写法： v-bind:xxx="xxx"  省略写法   :xxx="xxx"
+			4. 绑定事件监听，绑定指定事件名的回调函数
+				完整写法: v-on:click="xxx"  省略写法： @click="xxx"
+			-->
+			<div class="item">{{msg}}___{{msg.toUpperCase()}}</div>
+			<div class="item" v-text="test"></div>
+			<div class="item" v-html="test"></div>
+			<!-- 
+				1. 计算属性：
+					在computed 属性对象中定义计算属性的方法
+					在页面中使用{{方法名}} 来显示计算的结果
+					savesl: 初始化显示时会调用一次，以后每次相关属性变化都会调用一次
+				2. 监视属性：
+					通过 vm 对象的$watch() 或watch配置来监视指定的属性
+					当属性变化时，回调函数自动调用，在函数内部进行计算
+				3. 计算属性高级：
+					通过 getter/setter 实现对属性数据的显示和监视
+					计算属性存在缓存，多级读取只执行一次getter计算
+			-->
+		</div>
+	</body>
+	<script type="text/javascript" src="../../statics/js/Integrate/vue.js"></script>
+	<script type="text/javascript">
+		const vm = new Vue({
+			el: "#app",
+			data: {
+				firstname: "测试",
+				lastname: "案例",
+				msg: "savesl",
+				test: '<a>测试使用a标签</a>'
+			},
+			computed: {
+				showUsername () {  //计算属性中的一个方法， 方法的返回值作为属性值
+					return this.firstname + ' ' + this.lastname;
+				}
+			}
+		})
+	</script>
+	<style type="text/css">
+		#app{
+			width: 50%;
+			margin: 0 auto;
+		}
+		
+		.item{
+			margin-top: 3px;
+			height: 40px;
+			font-size: 18px;
+		}
+		
+		.item:active{
+			border: cyan solid 1px;
+		}
+	</style>
+</html>
