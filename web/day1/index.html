@@ -14,9 +14,20 @@
 				<span>名: </span>
 				<input type="text" v-model="lastname"/>
 			</div>
+			<!-- 计算属性  -->
 			<div class="item">
-				<span>姓名: </span>
+				<span>计算属性(单向): </span>
 				<input type="text" v-model="showUsername"/>
+			</div>
+			<!-- 监视 -->
+			<div class="item">
+				<span>监视(单向): </span>
+				<input type="text" v-model="username"/>
+			</div>
+			<!-- 计算属性高级 -->
+			<div class="item">
+				<span>计算属性高级(双向): </span>
+				<input type="text" v-model="showUsername2"/>
 			</div>
 			<!-- 
 			1. 以 "v-"开头的自定义标签属性
@@ -39,7 +50,7 @@
 					当属性变化时，回调函数自动调用，在函数内部进行计算
 				3. 计算属性高级：
 					通过 getter/setter 实现对属性数据的显示和监视
-					计算属性存在缓存，多级读取只执行一次getter计算
+					计算属性存在缓存，多级读取只执行一次getter计算【一次计算 多次显示】
 			-->
 		</div>
 	</body>
@@ -48,16 +59,43 @@
 		const vm = new Vue({
 			el: "#app",
 			data: {
-				firstname: "测试",
-				lastname: "案例",
+				firstname: "",
+				lastname: "",
 				msg: "savesl",
-				test: '<a>测试使用a标签</a>'
+				test: '<a>测试使用a标签</a>',
+				username: '',
 			},
-			computed: {
+			computed: {  //计算属性
+				//什么时候执行：初始化显示/相关的data属性数据发生该变
+				//用来做什么： 计算并返回当前属性的值
 				showUsername () {  //计算属性中的一个方法， 方法的返回值作为属性值
 					return this.firstname + ' ' + this.lastname;
+				},
+				
+				showUsername2 () {
+					//回调函数  当需要读取当前属性的值时回调，根据相关的数据计算并返回当前属性的值
+					// 1. 你定义的, 2. 你没有调用, 3. 但最终它执行了
+					//: 什么时候调用？ 用来做什么?
+					get(){
+						return this.firstname + ' ' + this.lastname;
+					},
+					
+					//监视当前属性值的变化，当 属性值发生改变时回调， 更新相关的属性数据
+					set(value){
+						this.firstname = value.split(' ')[0];
+						this.lastname = value.split(' ')[1];
+					}
+				}
+			},
+			watch: {  //监视
+				firstname: function (value){  //(newVal, oldVal) //firstname发生变化时调用
+					this.username = value + ' ' + this.lastname;
 				}
 			}
+		})
+		
+		vm.$watch('lastname', function (value){
+			this.username = this.firstname + ' ' + value;
 		})
 	</script>
 	<style type="text/css">

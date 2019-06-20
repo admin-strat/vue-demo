@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<style>
+		.ok_true{
+			color: red;
+			font-size: 15px;
+		}
+		.ok_false{
+			color: aquamarine;
+			font-size: 20px;
+		}
+		.show_true{
+			color: #0000FF;
+			font-size: 20px;
+		}
+		.show_false{
+			color: yellowgreen;
+			font-size: 14px;
+		}
+	</style>
+	<body>
+		<div id="app">
+			<!-- 
+				1. 条件渲染指令
+					v-if
+					v-else
+					v-show
+				2. 比较 v-if 与 v-show
+					v-if: 控制标签是否存在 【满足条件就创建，不满足就移除】
+					v-show: 控制标签是否显示【即标签都存在，通过控制display属性值，控制其是否显示】
+			-->
+			<h2>条件渲染</h2>
+			<div>
+				<p class="ok_true" v-if="ok">为真显示【true】</p>
+				<p class="ok_false" v-else>为假显示【false】</p>
+				<button @click="ok=!ok">控制</button>
+			</div>
+			<h4>__________</h4>
+			<div>
+				<p class="show_true" v-show="show">控制显示</p>
+				<p class="show_false" v-show="!show">控制隐藏</p>
+				<button @click="show=!show">转换</button>
+			</div>
+			
+			<h2>列表渲染</h2>
+			<h4>遍历数组</h4>
+			<ul>
+				<li v-for="(per, index) in persons" :key="index">
+					{{per.name}} --- {{per.age}} --- {{per.phone}}
+					---<button @click="deletePer(index)">删除</button>
+					---<button @click="updatePer(index,{name:'Cat',age:20,phone:'13625352626'})">更新</button>
+				</li>
+			</ul>
+			<h4>遍历对象</h4>
+			<ul>
+				<li v-for="(value, key) in persons[0]" :key="key">
+					{{key}}---{{value}}
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../statics/js/Integrate/vue.js"></script>
+	<script type="text/javascript">
+		// vue本身只是监视了persons的改变，没有监视数组内部数据的改变
+		// vue重写了数组中的一系列改变数组内部数据的方法（先调用原生，更新界面）--->数组内部改变，界面变化
+		const vm = new Vue({
+			el: '#app',
+			data: {
+				ok: true,
+				show: true,
+				persons: [ 
+					{name: 'Tom', age: 18, phone: '13515864754'},
+					{name: 'Jck', age: 12, phone: '13615464754'},
+					{name: 'War', age: 13, phone: '18515864754'},
+					{name: 'Run', age: 22, phone: '19615864754'},
+					{name: 'Hkr', age: 30, phone: '138315864754'}
+				]
+			},
+			methods: {
+				deletePer(index){
+					this.persons.splice(index, 1);
+				},
+				
+				updatePer(index, newPer){
+					//并没有改变persons本身，数组内部发生了变化，但并没有调用变异方法，vue不会更新界面
+					//this.persons[index] = newPer; 
+					
+					//splice 可以实现三个操作：增 删， 改
+					// 增： splice(index, 0, newPer)
+					// 删： splice(index, 1)
+					// 改： splice(index, 1, newPer)
+					this.persons.splice(index, 1, newPer);
+					
+				}
+			}
+		})
+	</script>
+</html>

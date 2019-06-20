@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<style type="text/css">
+		.demo1{
+			font-size: 20px;
+		}
+		.classA{
+			color: red;
+		}
+		.classB{
+			color: blue;
+		}
+		.classC{
+			font-size: 20px;
+		}
+		.classD{
+			font-size: 14px;
+		}
+	</style>
+	<body>
+		<div id="app">
+			<!-- class 与 style 绑定-->
+			<!--
+				class绑定：
+					值是字符串、对象、数组
+				style绑定：
+					:style="{color: acriveColor, fontSize: fontSize + 'px'}"
+					acriveColor,fontSize 是data属性
+			-->
+			<h2>1. class绑定: :class='xxx'</h2>
+			<p class="demo1" :class="A">xxx是字符串</p>
+			<button @click="updateA">更新</button>
+			<!-- demo2: 样式  isA: 控制其是否存在-->
+			<p :class="{classA: isA, classB: isB}">xxx是对象</p>
+			<button @click="updateB">更新</button>
+			<!-- arr是样式数组 -->
+			<p :class="arr">xxx是数组</p>
+			<button @click="updateC">更新</button>
+			
+			<h2>2. style绑定</h2>
+			<p :style="{color: B, fontSize: C + 'px'}">{color: B, fontSize: C + 'px'}</p>
+			<button @click="updateS">更新</button>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../statics/js/Integrate/vue.js"></script>
+	<script type="text/javascript">
+		const vm = new Vue({
+			el: '#app',
+			data: {
+				A: 'classA',
+				isA: true,
+				isB: false,
+				arr: ['classA','classC'],
+				B: 'red',
+				C: 16
+			},
+			
+			methods: {
+				updateA (){
+					if(this.A == 'classA'){
+						this.A = 'classB';
+					}else{
+						this.A = 'classA';
+					}
+				},
+				updateB (){
+					this.isA = !this.isA;
+					this.isB = !this.isB;
+				},
+				updateC (){
+					if(this.arr[0] == 'classA'){
+						this.arr = ['classB', 'classD'];
+					}else{
+						this.arr = ['classA', 'classC'];
+					}
+				},
+				updateS (){
+					if(this.B == 'red'){
+						this.B = 'blue';
+						this.C = 14;
+					}else{
+						this.B = 'red';
+						this.C = 16;
+					}
+				}
+			}
+		})
+	</script>
+</html>
