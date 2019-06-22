@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>过滤器</title>
+	</head>
+	<body>
+		<div id="app">
+			<h2>显示格式化的日期时间</h2>
+			<p>{{date}}</p>
+			<p>完整版: {{date | dateStr}}</p>
+			<p>年月日: {{date | dateStr('YYYY-MM-DD')}}</p>
+			<p>时分秒: {{date | dateStr('HH:mm:ss')}}</p>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../statics/js/Integrate/vue.js"></script>
+	<!--日期时间格式化库-->
+	<script type="text/javascript" src="https://cdn.bootcss.com/moment.js/2.24.0/moment.js" ></script>
+	<script type="text/javascript">
+		//自定义过滤器
+		// 函数对象的 filter方法 过滤器名字
+//		Vue.filter('dateStr', function (value, format) {
+//			// 对指定日期进行格式化  不写vlaue，则对当前时间进行格式化
+//			// format 有值用它 没有用默认
+//			return moment(value).format(format || 'YYYY-MM-DD HH:mm:ss');;
+//		})
+
+		// ES6 写法  形参默认值
+		Vue.filter('dateStr', function (value, format='YYYY-MM-DD HH:mm:ss') {
+			return moment(value).format(format);;
+		})
+		
+		new Vue({
+			el: '#app',
+			data: {
+				date: new Date()
+			}
+		})
+	</script>
+</html>

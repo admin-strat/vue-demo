@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>表单数据的自动收集</title>
+	</head>
+	<body>
+		<div id="app">
+			<!-- 自定义表单提交事件，并阻止默认行为 -->
+			<form action="/xxx" @submit.prevent="showFormInfo">
+				<span>用户名: </span>
+				<input type="text" v-model="info.username" />
+				<br>
+				
+				<span>密码: </span>
+				<input type="password" v-model="info.password" />
+				<br>
+				
+				<span>性别: </span>
+				<input type="radio" id="female" value="女" v-model="info.sex" />
+				<label for="female">女</label>
+				<input type="radio" id="male" value="男" v-model="info.sex" />
+				<label for="male">男</label>
+				<br>
+				
+				<span>爱好: </span>
+				<input type="checkbox" id="basket" value="basket" v-model="info.likes" />
+				<label for="basket">篮球</label>
+				<input type="checkbox" id="foot" value="foot" v-model="info.likes" />
+				<label for="foot">足球</label>
+				<input type="checkbox" id="pingpang" value="pingpang" v-model="info.likes" />
+				<label for="pingpang"></label>
+				<br>
+				
+				<span>城市: </span>
+				<select v-model="info.city">
+					<option value="0">未选择</option>
+					<option :value="city.id" v-for="(city, index) in cityList" :key="index">{{city.cityName}}</option>
+				</select>
+				<br>
+				
+				<span>介绍: </span>
+				<textarea rows="20" v-model="info.desc"></textarea>
+				<br>
+				
+				<input type="submit" value="提交" />
+			</form>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../statics/js/Integrate/vue.js"></script>
+	<script type="text/javascript">
+		const vm = new Vue({
+			el: '#app',
+			data: {
+				info: {
+					username: '',
+					password: '',
+					sex: '男',
+					likes: [],
+					city: 0,
+					desc: ''
+				},
+				cityList: [
+					{id: 1, cityName: 'BG'},
+					{id: 2, cityName: 'XG'},
+					{id: 3, cityName: 'AM'},
+					{id: 4, cityName: 'NJ'},
+					{id: 5, cityName: 'SZ'}
+				]
+			},
+			
+			methods: {
+				showFormInfo(){
+					console.log(this.info);
+				}
+			}
+		})
+	</script>
+</html>

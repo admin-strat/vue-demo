@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<!--
+				1. 列表过滤
+				2. 列表排序
+			-->
+			<input type="text" v-model="searchName"/>
+			<ul>
+				<li v-for="(item, index) in filterList" :key="index">
+					{{index}}---{{item.name}}---{{item.age}}
+				</li>
+				<button @click="setOrderType('ASC')">年龄升序</button>
+				<button @click="setOrderType('DESC')">年龄降序</button>
+				<button @click="setOrderType('NO')">原本顺序</button>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../statics/js/Integrate/vue.js"></script>
+	<script type="text/javascript">
+		const vm = new Vue({
+			el: '#app',
+			data: {
+				list: [
+					{name: 'Tomcat', age: 18},
+					{name: 'Apachea', age: 25},
+					{name: 'time', age: 11},
+					{name: 'skoret', age: 22},
+					{name: 'socker', age: 5},
+					{name: 'date', age: 33},
+					{name: 'korjak', age: 33},
+					{name: 'shiling', age: 16}
+				],
+				searchName: '',
+				orderType: 'NO'  //排序规则
+			},
+			
+			computed: { //计算属性
+				filterList (){
+					//取出相关的数据 
+					//【结构赋值】
+					const {searchName, list, orderType} = this;
+					//最终需要显示的数组
+					let fList;
+					//对list进行过滤
+					fList = list.filter(item => item.name.indexOf(searchName)!==-1)
+					
+					//排序   ASC:升序 ，DESC:降序
+					if(orderType != 'NO'){
+						fList.sort(function (item1, item2){  //如果返回负数，则item1在前，返回正数item2在前
+							if(orderType === 'DESC'){
+								return item2.age - item1.age;
+							} else{
+								return item1.age - item2.age;
+							}
+							
+						})
+					}
+					
+					return fList;
+				}
+			},
+			
+			methods: {
+				setOrderType(orderType){
+					this.orderType = orderType;
+				}
+			}
+		})
+	</script>
+</html>

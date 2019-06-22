@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>指令</title>
+	</head>
+	<style type="text/css">
+		/*属性选择器*/
+		[v-cloak]{
+			display: none;
+		}
+	</style>
+	<body>
+		<!--
+			常用内置指令: 
+				v:text: 更新元素的 textContent
+				v:html: 更新元素的 innerHTML
+				v-if: 如果为true, 当前标签才会输出到页面
+				v-else: 如果为false，当前标签才会输出到页面
+				v-show: 通过控制display样式来控制显示/隐藏
+				v-for: 遍历数组/对象
+				v-on: 绑定事件监听，一般简写为@
+				v-bind: 强制绑定解析表达式，可以省略v-bind简写为 :
+				v-model: 双向数据绑定
+				ref: 指定唯一标识，vue对象通过$els属性访问这个元素对象
+				v-cloak: 防止闪现，与css配合:[v-cloak]{display:none}
+					防止页面显示{{msg}} 这样的情况
+			自定义指令: 
+				el: 指令所在标签的element
+				1. 注册全局指令
+					Vue.directive('my-directive', function(el, binding){
+						el.innerHTML = binding.value.toupperCase();
+					})
+				2. 注册局部指令
+					directives : {
+						'my-directive' : {
+							bin (el, binding){
+								el.innerHTML = binding.value.toupperCase();
+							}
+						}
+					}
+				3. 使用指令
+					v-my-directive='xxx'
+				
+				试验：
+					v- 去掉后的才是指令名
+					1.自定义指令 功能与v-text类似，但转换为全大写 v-upper-text
+					2.自定义指令 功能与v-text类似，但转换为全小写 v-lower-text
+		-->
+		<div id="app">
+			<p ref="content">savesl.com</p>
+			<button @click="hint">提示</button>
+			
+			<p v-cloak>{{msg}}</p>
+			<!--<p v-text="msg"></p>-->
+			
+			<h2>自定义指令</h2>
+			<p v-upper-text="info"></p>
+			<p v-lower-text="info"></p>
+		</div>
+		
+		<div id="app2">
+			<h2>____</h2>
+			<p v-upper-text="info"></p>
+			<p v-lower-text="info"></p>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../statics/js/Integrate/vue.js"></script>
+	<script type="text/javascript">
+//		alert("ddd")
+		
+		//定义全局指令
+		// el: 指令属性所在的标签对象
+		// binding: 包含指令相关信息的对象
+		Vue.directive('upper-text', function(el, binding){
+//			console.log(el, binding)
+			el.textContent = binding.value.toUpperCase();
+		})
+	
+		new Vue({
+			el: '#app',
+			data: {
+				msg: '时令社区',
+				info: 'Savesl Is The Best Community!'
+			},
+			
+			methods: {
+				hint () {
+					//通过 this.$refs得到res对象 .content得到 标签对象 。textContent得到标签文本
+					alert(this.$refs.content.textContent);
+				}
+			},
+			
+			directives: { //注册局部指令，在当前实例内有效
+				'lower-text'(el, binding){
+					el.textContent = binding.value.toLowerCase();
+				}
+			}
+		})
+		
+		new Vue({
+			el: '#app2',
+			data: {
+				info: 'Anything Is Possible!'
+			}
+		})
+	</script>
+</html>

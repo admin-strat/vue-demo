@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>声明周期</title>
+	</head>
+	<body>
+		<!--
+			生命周期阶段: 初始化显示  更新显示  销毁
+			
+			产生Vue实例
+			调用beforeCreate
+			准备工作:
+				Observe Data 观察【监视数据】
+				init Events 初始化事件
+			创建 created
+			指定el：自动挂载页面，没有，手动指定挂载
+			是否有 template
+				没有：
+				解析 el 内部html作为模板解析【在内存中解析】
+				调用 beforMount 
+				【挂载内存中的数据】
+				调用 mounted【*】
+			
+			更新：
+				发生变化前调用 beforeUpdate
+				页面发生变化
+				发生变化前调用 updated
+				
+			销毁：
+				销毁前调用 beforeDestroy
+				销毁【页面不在发生交互【页面还存在】
+				销毁后调用：destroyed
+				
+			主要使用mounted, beforeDestroy声明周期方法
+		-->
+		<div id="app">
+			<button @click="destroyVm">destroy vm</button>
+			<p v-show="isShow">测试显示隐藏</p>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../statics/js/Integrate/vue.js"></script>
+	<script type="text/javascript">
+		const vm = new Vue({
+			el: '#app',
+			data: {
+				isShow: true
+			},
+			
+			//声明周期
+			//1. 初始化
+			beforeCreate (){
+				console.log('beforeCreate()')
+			},
+			
+			
+			created (){
+				console.log('created()')
+			},
+			
+			beforeMount (){
+				console.log('beforeMount()')
+			},
+			
+			mounted (){  //初始化显示之后立即调用(1次)
+				console.log('mounted()')
+				
+				//箭头函数【匿名】[将函数作为参数传递 最好声明成箭头函数]:
+				// 箭头函数用来定义匿名函数 自身没有this，引用外部this
+				this.intervalId = setInterval(() => {
+					console.log("0-0000")
+					this.isShow = !this.isShow;
+				}, 1000)
+			},
+			
+			//2. 更新阶段 [n次]
+			beforeUpdate (){
+				console.log("_______")
+				console.log('beforeUpdate()')
+			},
+			
+			
+			updated (){
+				console.log('updated()')
+			},
+			
+			//3. 销毁
+			//销毁前调用(1次)
+			beforeDestroy (){
+				console.log("_______")
+				console.log('beforeDestroy()')
+				// 清除定时器
+				clearInterval(this.intervalId);
+			},
+			
+			destroyed (){
+				console.log('destroyed()')
+			},
+			
+			methods: {
+				destroyVm (){
+					this.$destroy()
+				}
+			}
+		})
+	</script>
+</html>

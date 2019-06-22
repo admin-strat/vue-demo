@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>过渡与动画</title>
+	</head>
+	<style type="text/css">
+		/*显示/隐藏的过渡效果*/
+		.fade-enter-active, .fade-leave-active{
+			transition: opacity 1s;
+		}
+		
+		/*隐藏时的样式*/
+		.fade-enter, .fade-leave-to{
+			opacity: 0;
+		}
+		
+		
+		/*显示过渡效果*/
+		.move-enter-active{
+			transition: all 1s;
+		}
+		
+		/*隐藏过渡效果*/
+		.move-leave-active{
+			transition: all 3s;
+		}
+		
+		/*隐藏时的样式*/
+		.move-enter, .move-leave-to{
+			opacity: 0;
+			transform: translateX(20px);
+		}
+		
+		/*动画*/
+		/*进入过程的动画*/
+		.bounce-enter-active {
+		  animation: bounce-in 1s;
+		}
+		/*离开过程的动画*/
+		.bounce-leave-active {
+			/*reverse: 反过来*/
+		  animation: bounce-in 1s reverse;
+		}
+		
+		@keyframes bounce-in {
+			/*时间占总时间百分比*/
+		  0% {
+		  	/*元素显示百分比*/
+		    transform: scale(0);  
+		  }
+		  50% {
+		    transform: scale(1.5);
+		  }
+		  100% {
+		    transform: scale(1);
+		  }
+		}
+	</style>
+	<body>
+		<!--
+			1. vue动画的理解
+				操作css的transition 或 animation
+				vue会给目标元素添加/移除特定的class
+			2. 基本过渡动画的编码：
+				1. 在目标元素外包裹 <transition name="xxx"></transition>
+				2. 定义class样式
+					指定过渡样式：transition
+					指定隐藏时的样式: opacity/其他
+			具体可以参考文档
+		-->
+		<div id="app">
+			<button @click="isShow = !isShow">toggle</button>
+			<transition name="fade">
+				<p v-show="isShow">hello</p>
+			</transition>
+		</div>
+		
+		<div id="app2">
+			<button @click="isShow = !isShow">toggle</button>
+			<transition name="move">
+				<p v-show="isShow">hello</p>
+			</transition>
+		</div>
+		
+		<!--动画-->
+		<div id="example-2">
+		  <button @click="show = !show">Toggle show</button>
+		  <br>
+		  <transition name="bounce">
+		    <p v-if="show" style="display: inline-block">Lorem ipsum dolor</p>
+		  </transition>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../statics/js/Integrate/vue.js"></script>
+	<script type="text/javascript">
+		const vm = new Vue({
+			el: '#app',
+			data: {
+				isShow: true
+			}
+		})
+		
+		new Vue({
+			el: '#app2',
+			data: {
+				isShow: true
+			}
+		})
+		
+		new Vue({
+		  el: '#example-2',
+		  data: {
+		    show: true
+		  }
+		})
+	</script>
+</html>
